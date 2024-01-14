@@ -18,17 +18,19 @@ pub fn App() -> impl IntoView {
         <Title text="Welcome to Leptos"/>
 
         // content for this welcome page
-        <Router fallback=|| {
-            let mut outside_errors = Errors::default();
-            outside_errors.insert_with_default_key(AppError::NotFound);
-            view! { <ErrorTemplate outside_errors/> }.into_view()
-        }>
-            <main>
-                <Routes>
-                    <Route path="" view=HomePage/>
-                </Routes>
-            </main>
-        </Router>
+        <div  data-theme={"dark"}>
+            <Router fallback=|| {
+                let mut outside_errors = Errors::default();
+                outside_errors.insert_with_default_key(AppError::NotFound);
+                view! { <ErrorTemplate outside_errors/> }.into_view()
+            }>
+                <main>
+                    <Routes>
+                        <Route path="" view=HomePage/>
+                    </Routes>
+                </main>
+            </Router>
+        </div>
     }
 }
 
@@ -40,7 +42,19 @@ fn HomePage() -> impl IntoView {
     let on_click = move |_| set_count.update(|count| *count += 1);
 
     view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+        <div class="container mx-auto ">
+            <div class="flex flex-col items-center"> 
+                <div>
+                    <h1 class="font-bold text-2xl grow">"Welcome to Leptos!"</h1>
+                </div>
+                <div>
+                    <button 
+                        class="btn btn-primary"
+                        on:click=on_click>
+                        "Click Me: " {count}
+                    </button>
+                </div>
+            </div> 
+        </div>
     }
 }
