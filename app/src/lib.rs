@@ -21,8 +21,8 @@ pub fn App() -> impl IntoView {
                     icon=Some(SVGIcons::Book(18, false))
                     title="Docs".to_owned()>
                     <NavigationItem slot 
-                        label="Use".to_owned() 
-                        path=Some("/use".to_owned()) />
+                        label="Get Started".to_owned() 
+                        path=Some("/get_started".to_owned()) />
                     <NavigationItem slot 
                         label="Themes".to_owned()
                         path=Some("/themes".to_owned()) />
@@ -102,7 +102,7 @@ pub fn App() -> impl IntoView {
                 <main>
                     <Routes>
                         <Route path="" view=HomePage />
-                        <Route path="/use" view=UsePage />
+                        <Route path="/get_started" view=GetStartedPage />
                         <Route path="/themes" view=ThemePage />
                     </Routes>
                 </main>
@@ -112,20 +112,72 @@ pub fn App() -> impl IntoView {
 }
 
 #[component]
-fn HomePage() -> impl IntoView {
+fn MainCenterContent(
+   children: Children, 
+) -> impl IntoView {
     view! {
-        <div class="container mx-auto px-4">
-            <article class="prose">
-                <h1>Large Leptos component library meant to rapidly prototype applications.</h1>
-            </article>
+        <div class="grid grid-cols-12 gap-4 justify-items-center">
+            <div class="col-start-2 col-span-10 w-full p-4">
+                <div class="flex flex-col gap-4">
+                    {children()} 
+                </div>
+            </div>
         </div>
     }
 }
 
 #[component]
-fn UsePage() -> impl IntoView {
+fn Hero<F, IV>(
+    /// Should change to slot
+    #[prop(optional)]
+    call_to_action_button: Option<F>,
+    title: String,
+    text: String,
+) -> impl IntoView 
+where 
+    F: Fn() -> IV,
+    IV: IntoView,
+{
     view! {
-        Use Page
+        <div class="hero bg-base-200 min-h-full">
+            <div class="hero-content text-center" style="max-width:160rem;">
+              <div class="max-w-full">
+                <h1 class="text-5xl font-bold">{title}</h1>
+                <p class="py-6">
+                {text}
+                </p>
+                {call_to_action_button()}
+              </div>
+            </div>
+          </div>
+    }
+}
+
+#[component]
+fn HomePage() -> impl IntoView {
+    view! {
+        <MainCenterContent>
+            <Hero 
+                call_to_action_button={
+                    || view! { 
+                        <button class="btn btn-primary">Get Started</button>
+                    }
+                }
+                title="PB Leptos Component Library".to_string()
+                text="Large Leptos component library meant to rapidly prototype applications.".to_string()
+            />
+            <Hero
+                title="Another Title".to_string()
+                text="some long text".to_string()
+            />
+        </MainCenterContent>
+    }
+}
+
+#[component]
+fn GetStartedPage() -> impl IntoView {
+    view! {
+        Get Started
     }
 }
 
