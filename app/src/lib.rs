@@ -128,9 +128,8 @@ fn MainCenterContent(
 
 #[component]
 fn Hero<F, IV>(
-    /// Should change to slot
     #[prop(optional)]
-    call_to_action_button: Option<F>,
+    call_to_action_button: MaybeProp<F>,
     title: String,
     text: String,
 ) -> impl IntoView 
@@ -159,9 +158,10 @@ fn HomePage() -> impl IntoView {
         <MainCenterContent>
             <Hero 
                 call_to_action_button={
-                    || view! { 
-                        <button class="btn btn-primary">Get Started</button>
-                    }
+                    MaybeProp::derive(move || view! { 
+                            <button class="btn btn-primary">Get Started</button>
+                        }.into()
+                    )
                 }
                 title="PB Leptos Component Library".to_string()
                 text="Large Leptos component library meant to rapidly prototype applications.".to_string()
